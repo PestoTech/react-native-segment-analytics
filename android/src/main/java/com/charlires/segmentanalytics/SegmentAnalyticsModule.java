@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+import com.segment.analytics.android.integrations.localytics.LocalyticsIntegration;
 
 public class SegmentAnalyticsModule extends ReactContextBaseJavaModule {
 
@@ -37,6 +38,7 @@ public class SegmentAnalyticsModule extends ReactContextBaseJavaModule {
             Analytics analytics = new Analytics.Builder(this.getReactApplicationContext(), configKey)
                     .trackApplicationLifecycleEvents() // Enable this to record certain application events automatically!
                     .recordScreenViews() // Enable this to record screen views automatically!
+                    .use(LocalyticsIntegration.FACTORY)
                     .build();
             Analytics.setSingletonInstance(analytics);
         } catch (Exception e) {
@@ -46,36 +48,51 @@ public class SegmentAnalyticsModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void identify(String userId, ReadableMap traits) {
-        Analytics.with(this.getReactApplicationContext()).identify(
+        try {
+            Analytics.with(this.getReactApplicationContext()).identify(
                 userId,
                 toTraits(traits),
                 null
-        );
+            );
+        } catch (Exception e) {
+            Log.e("SegmentAnalyticsModule", "Failed to identify " + userId + ". " + e.getMessage());
+        }
     }
 
     @ReactMethod
     public void track(String trackText, ReadableMap properties) {
-
-        Analytics.with(this.getReactApplicationContext()).track(
+        try {
+            Analytics.with(this.getReactApplicationContext()).track(
                 trackText,
                 this.toProperties(properties)
-        );
+            );
+        } catch (Exception e) {
+            Log.e("SegmentAnalyticsModule", "Failed to track " + trackText + ". " + e.getMessage());
+        }
     }
 
     @ReactMethod
     public void screen(String screenName, ReadableMap properties) {
-        Analytics.with(this.getReactApplicationContext()).screen(
+        try {
+            Analytics.with(this.getReactApplicationContext()).screen(
                 null,
                 screenName,
                 this.toProperties(properties));
+        } catch (Exception e) {
+            Log.e("SegmentAnalyticsModule", "Failed to screen " + screenName + ". " + e.getMessage());
+        }
     }
 
     @ReactMethod
     public void alias(String newId) {
-        Analytics.with(this.getReactApplicationContext()).alias(
+        try {
+            Analytics.with(this.getReactApplicationContext()).alias(
                 newId,
                 null
-        );
+            );
+        } catch (Exception e) {
+            Log.e("SegmentAnalyticsModule", "Failed to alias " + newId + ". " + e.getMessage());
+        }
     }
 
     private boolean nullOrEmpty(@Nullable ReadableMap readableMap) {
