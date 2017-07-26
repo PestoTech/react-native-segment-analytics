@@ -38,7 +38,7 @@ public class SegmentAnalyticsModule extends ReactContextBaseJavaModule {
             Analytics analytics = new Analytics.Builder(this.getReactApplicationContext(), configKey)
                     .trackApplicationLifecycleEvents() // Enable this to record certain application events automatically!
                     .recordScreenViews() // Enable this to record screen views automatically!
-                    .use(LocalyticsIntegration.FACTORY)
+                    // .use(LocalyticsIntegration.FACTORY)
                     .build();
             Analytics.setSingletonInstance(analytics);
         } catch (Exception e) {
