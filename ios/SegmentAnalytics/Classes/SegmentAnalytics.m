@@ -6,6 +6,7 @@
 #import "RCTConvert.h"
 #import <Analytics/SEGAnalytics.h>
 #import <Foundation/Foundation.h>
+#import <Segment-Localytics/SEGLocalyticsIntegrationFactory.h>
 
 @implementation SegmentAnalytics
 
@@ -17,6 +18,7 @@ RCT_EXPORT_METHOD(setup:(NSString*)configKey) {
     configuration.recordScreenViews = YES;
     configuration.shouldUseLocationServices = true;
     configuration.trackApplicationLifecycleEvents = YES;
+    [configuration use:[SEGLocalyticsIntegrationFactory instance]];
     [SEGAnalytics setupWithConfiguration:configuration];
 }
 
