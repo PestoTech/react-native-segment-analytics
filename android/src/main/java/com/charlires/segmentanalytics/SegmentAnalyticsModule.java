@@ -37,7 +37,7 @@ public class SegmentAnalyticsModule extends ReactContextBaseJavaModule {
         try {
             Analytics analytics = new Analytics.Builder(this.getReactApplicationContext(), configKey)
                     .trackApplicationLifecycleEvents() // Enable this to record certain application events automatically!
-                    // .use(LocalyticsIntegration.FACTORY)
+                    .use(LocalyticsIntegration.FACTORY)
                     .build();
             Analytics.setSingletonInstance(analytics);
         } catch (Exception e) {
