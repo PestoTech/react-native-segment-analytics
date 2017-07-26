@@ -31,11 +31,7 @@ repositories {
 }
 
 dependencies {
-    // Localytics
-    repositories {
-      mavenCentral()
-      maven { url 'http://maven.localytics.com/public' }
-    }
+    compile files('libs/localytics.jar')
     compile 'com.segment.analytics.android.integrations:localytics:+@aar'
     compile 'com.facebook.react:react-native:+'
     compile "com.android.support:appcompat-v7:23.0.1"
