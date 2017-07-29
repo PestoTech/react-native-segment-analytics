@@ -1,12 +1,17 @@
 import {
   NativeModules,
+  Platform,
 } from 'react-native';
 
 const {SegmentAnalytics} = NativeModules;
 
 export default {
-  setup: function (configKey: string) {
-    SegmentAnalytics.setup(configKey);
+  setup: function (configKey: string, gcmSenderId: string) {
+    if (Platform.OS === 'android') {
+      SegmentAnalytics.setup(configKey, gcmSenderId);
+    } else {
+      SegmentAnalytics.setup(configKey);
+    }
   },
 
   identify: function (userId: string, traits: Object) {
