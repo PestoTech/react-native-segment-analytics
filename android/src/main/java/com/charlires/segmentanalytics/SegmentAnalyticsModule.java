@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import com.segment.analytics.android.integrations.localytics.LocalyticsIntegration;
+import com.localytics.android.*;
 
 public class SegmentAnalyticsModule extends ReactContextBaseJavaModule {
 
@@ -33,13 +34,20 @@ public class SegmentAnalyticsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setup(String configKey) {
+    public void setup(String configKey, String gcmSenderId) {
         try {
             Analytics analytics = new Analytics.Builder(this.getReactApplicationContext(), configKey)
                     .trackApplicationLifecycleEvents() // Enable this to record certain application events automatically!
                     .use(LocalyticsIntegration.FACTORY)
                     .build();
             Analytics.setSingletonInstance(analytics);
+
+            // Localytics push integration
+            Analytics.with(this.getReactApplicationContext()).onIntegrationReady(Analytics.BundledIntegration.LOCALYTICS, new Analytics.Callback() {
+                @Override public void onReady(Object integration) {
+                  Localytics.registerPush(gcmSenderId);
+                }
+              });
         } catch (Exception e) {
             Log.e("SegmentAnalyticsModule", e.getMessage());
         }
